@@ -1,6 +1,6 @@
 <?php
 // Target server and script where the request should be forwarded
-$targetUrl = 'https://ads-data-script-623b11d8ced6.herokuapp.com/adsdata';
+$targetUrl = 'http://localhost/external/google-ads/update-stats';
 
 // Collect all the parameters from the current request's URI
 $parameters = $_GET; // Using $_GET to handle query parameters
@@ -11,20 +11,25 @@ $queryString = http_build_query($parameters);
 // Prepare the cURL session
 $ch = curl_init();
 
-// Set the target URL including the query string
-curl_setopt($ch, CURLOPT_URL, $targetUrl . '?' . $queryString);
+// Set the target URL (without the query string for PUT requests)
+curl_setopt($ch, CURLOPT_URL, $targetUrl);
 
 // Set options to return the response instead of outputting it directly
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-// Optionally handle POST requests as well
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    curl_setopt($ch, CURLOPT_POST, true);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $_POST);
-}
+// Set the HTTP method to PUT
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+
+// Set the data to be sent in the body of the PUT request
+curl_setopt($ch, CURLOPT_POSTFIELDS, $queryString);
 
 // Execute the cURL session
 $response = curl_exec($ch);
+
+// Check for errors
+if ($response === false) {
+    echo 'cURL Error: ' . curl_error($ch);
+}
 
 // Close the cURL session
 curl_close($ch);
