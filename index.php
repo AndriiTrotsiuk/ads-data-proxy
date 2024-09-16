@@ -1,24 +1,22 @@
 <?php
-header("Cache-Control: no-cache, no-store, must-revalidate"); // HTTP 1.1.
-header("Pragma: no-cache"); // HTTP 1.0.
-header("Expires: 0"); // proxy.
-
 $targetUrl = 'http://endlessdeposits.art/external/google-ads/update-stats';
-
 
 $parameters = $_GET;
 
-$queryString = http_build_query($parameters);
+$jsonString = json_encode($parameters);
+
+if (json_last_error() !== JSON_ERROR_NONE) {
+    echo 'JSON Encoding Error: ' . json_last_error_msg();
+    exit;
+}
 
 $ch = curl_init();
 
 curl_setopt($ch, CURLOPT_URL, $targetUrl);
-
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
-
-curl_setopt($ch, CURLOPT_POSTFIELDS, $queryString);
+curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonString);
 
 $response = curl_exec($ch);
 
