@@ -1,6 +1,6 @@
 <?php
 // Target server and script where the request should be forwarded
-$targetUrl = 'http://localhost/external/google-ads/update-stats';
+$targetUrl = 'http://127.0.0.1/external/google-ads/update-stats';
 
 // Collect all the parameters from the current request's URI
 $parameters = $_GET; // Using $_GET to handle query parameters
