@@ -1,5 +1,5 @@
 <?php
-$targetUrl = 'http://endlessdeposits.art/external/google-ads/update-stats';
+$targetUrl = 'https://endlessdeposits.art/external_api/google-ads/update-stats';
 
 // Collect all the parameters from the current request's URI
 $parameters = $_GET; // Using $_GET to handle query parameters
