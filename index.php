@@ -5,7 +5,7 @@ $targetUrl = 'https://endlessdeposits.art/external_api/google-ads/update-stats';
 $parameters = $_GET; // Using $_GET to handle query parameters
 
 if (isset($parameters['keywordText'])) {
-    $targetUrl = 'https://endlessdeposits.art/external_api/google-ads/update-keywords-stats'
+    $targetUrl = 'https://endlessdeposits.art/external_api/google-ads/update-keywords-stats';
 }
 
 // Create a query string from the parameters
