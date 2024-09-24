@@ -1,42 +1,45 @@
 <?php
-$targetUrl = 'https://endlessdeposits.art/external_api/google-ads/update-stats';
 
-// Collect all the parameters from the current request's URI
-$parameters = $_GET; // Using $_GET to handle query parameters
-
-if (isset($parameters['keywordText'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $targetUrl = 'https://endlessdeposits.art/external_api/google-ads/update-keywords-stats';
+
+    $jsonData = file_get_contents('php://input');
+
+    $parameters = json_decode($jsonData, true);
+
+    if (json_last_error() !== JSON_ERROR_NONE) {
+        echo 'Invalid JSON data received';
+        exit;
+    }
+} else {
+    $targetUrl = 'https://endlessdeposits.art/external_api/google-ads/update-stats';
+
+    $parameters = $_GET;
+
+    if (isset($parameters['keywordText'])) {
+        $targetUrl = 'https://endlessdeposits.art/external_api/google-ads/update-keywords-stats';
+    }
 }
 
-// Create a query string from the parameters
 $queryString = http_build_query($parameters);
 
-// Prepare the cURL session
 $ch = curl_init();
 
-// Set the target URL (without the query string for PUT requests)
 curl_setopt($ch, CURLOPT_URL, $targetUrl);
 
-// Set options to return the response instead of outputting it directly
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-// Set the HTTP method to PUT
 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
 
-// Set the data to be sent in the body of the PUT request
 curl_setopt($ch, CURLOPT_POSTFIELDS, $queryString);
 
-// Execute the cURL session
 $response = curl_exec($ch);
 
-// Check for errors
 if ($response === false) {
     echo 'cURL Error: ' . curl_error($ch);
 }
 
-// Close the cURL session
 curl_close($ch);
 
-// Output the response from the target server
 echo $response;
 ?>
