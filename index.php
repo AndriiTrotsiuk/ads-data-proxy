@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    if (isset($parameters['keywordText'])) {
+    if (isset($parameters[0]['keywordText'])) {
         $targetUrl = 'https://endlessdeposits.art/external_api/google-ads/update-keywords-stats';
     }
 
