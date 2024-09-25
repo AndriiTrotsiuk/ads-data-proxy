@@ -15,6 +15,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $targetUrl = 'https://endlessdeposits.art/external_api/google-ads/update-keywords-stats';
     }
 
+    if (isset($parameters[0]['searchTermText'])) {
+        $targetUrl = 'https://endlessdeposits.art/external_api/google-ads/update-search-term-stats';
+    }
+
     $queryString = http_build_query($parameters);
 
     $ch = curl_init();
